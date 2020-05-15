@@ -5,6 +5,10 @@ date: "5/14/2020"
 output: html_document
 ---
 
+FOR FINAL DOC
+As the CPD still has not released the details of this algorithm — we have the scores, but we don't know how they got there — we're forced to take them at their word. 
+
+
 ```{r setup, echo = FALSE}
 #The necessary packages
 
@@ -12,6 +16,12 @@ library(tidyverse)
 library(here)
 install.packages("RSocrata") #Make sure you have this one!
 library(forcats)
+
+#Sends visualizations to a folder named images (and creates that folder if it 
+#doesn't exist). I'll use this folder to fetch images for my final write-up.
+knitr::opts_chunk$set(
+  fig.path = "images/"
+)
 
 ```
 
@@ -74,9 +84,7 @@ Most SSL Subjects were under the age of 40 when they were most recently arrested
 
 ```{r scores by age}
 
-library(forcats)
-
-ssl_age <- ssl %>% 
+ssl_age_arr <- ssl %>% 
   #using forcats:fct_relevel to re-order levels to desired order along x axis
   mutate(age_arr = fct_relevel(age_arr, 
                                c("less than 20",
@@ -91,7 +99,7 @@ ssl_age <- ssl %>%
                                 'over fifty' = c("50-60", 
                                                  "60-70", 
                                                  "70-80"))) %>%
-  ggplot(mapping = aes(age_arr, na.rm = FALSE)) +
+  ggplot(mapping = aes(age_arr)) +
   #adding a fun color
   geom_bar(fill = "#FF6666") +
   labs(title = "SSL List Subjects by Age Last Arrested", 
@@ -100,7 +108,79 @@ ssl_age <- ssl %>%
              caption = "(Source: Chicago Data Portal)") +
   theme_minimal()
 
-ssl_age
+ssl_age_arr
+```
+
+
+What proporation of people who the list claims is at risk or extremely at risk of becoming party to violence are *actually* likely of becoming party to violence? One way of answering this question is to ask: how many people on the list are  too old to commit violence? (Aging out indicates inaccuracies in the list, old people commit very few violent crimes).
+
+More background: very possible list is inaccurate because it was not updated very frequently, it kept people on the list who had last been arrested when they were in their 20s -- 40 years ago!)
+
+```{r oldies visualization}
+
+ssl_oldies <- ssl %>%
+  group_by(ssl_score) %>%
+  #count total number of SSL scores per score
+  mutate(total = n()) %>%
+  #count (oldies) for old high risk SSL subjects
+  filter(age_curr == "50-60" | 
+           age_curr == "60-70" | 
+           age_curr == "70-80" & 
+           ssl_score > 250) %>% 
+  mutate(oldies = n()) %>% 
+  #create percentage
+  mutate(percent = oldies/total) %>% 
+  #graph
+  ggplot(mapping = aes(x = ssl_score, y = percent)) +
+  geom_line() +
+  # print the y-axis labels using percentages rather than proportions
+  scale_y_continuous(labels = scales::percent) +
+  # label our graph
+  labs(
+    title = "Percent of Old Subjects (Age 50+)  per SSL Score",
+    x = "SSL Score",
+    y = "Percent of Age 50+ Subjects",
+    caption = "Source: Chicago Data Portal"
+  )
+
+ssl_oldies
 
 ```
 
+Results are pretty surprising. Looks like the SSL is pretty accurate in terms of factoring age into SSL Score; people over 50 make up the significant majority of subjects assessed at a low risk of becoming party to violence. It seems like age is perhaps one of the biggest factors in deciding SSL scores -- let's examine that variance further with a boxplot. 
+
+Variance in SSL score by age group
+
+```{r ssl scores by age group}
+ssl_age <- ssl %>% 
+  #using forcats:fct_relevel to re-order levels to desired order in key
+  mutate(age_curr = fct_relevel(age_curr, 
+                               c("less than 20",
+                                 "20-30",
+                                 "30-40",
+                                 "40-50",
+                                 "50-60",
+                                 "60-70",
+                                 "70-80"))) %>% 
+  #using forcats:fct_collapse to combine older age groups in over fifty
+  mutate(age_curr = fct_collapse(age_curr,
+                                'over fifty' = c("50-60", 
+                                                 "60-70", 
+                                                 "70-80"))) %>%
+  ggplot(mapping = aes(x = ssl_score, fill = age_curr, na.rm = FALSE)) +
+  geom_density(stat = "bin") +
+   labs(title = "SSL List Subjects by Current Age", 
+             x = "SSL Score",  
+             y = "Density",
+             color = "Age Group", 
+             caption = "(Source: Chicago Data Portal)") +
+  theme_minimal()
+  
+
+ssl_age
+```
+
+
+Highest scores are for age group less than 20! Interesting. Also wondering what this extra pink lump is. 
+
+OK now let's turn to race. 
