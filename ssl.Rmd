@@ -23,10 +23,12 @@ knitr::opts_chunk$set(
   fig.path = "images/"
 )
 
+
 ```
 
 
-```{r read & tidy data, cache = TRUE}
+```{r read & tidy data, echo = TRUE, results = 'hide', cache = TRUE}
+
 #Builds local file path & avoids using the dreaded setwd() by using Socrata package
 #to read directly from a URL. Find more info on Socrata.  [here](https://github.com/Chicago/RSocrata/blob/master/README.md).
 
@@ -40,6 +42,9 @@ ssl <- RSocrata::read.socrata("https://data.cityofchicago.org/Public-Safety/Stra
   rename(age_arr = 'predictor_rat_age_at_latest_arrest',
          gang_aff = 'predictor_rat_gang_affiliation', 
          race = 'race_code_cd') #shortening var names
+
+#Read census data using local file path
+census <- cat(readLines(here("data", "census_data_12_16.csv")))  
 
 ```
   
@@ -84,7 +89,7 @@ Most SSL Subjects were under the age of 40 when they were most recently arrested
 
 ```{r scores by age}
 
-ssl_age_arr <- ssl %>% 
+ssl_age_arr <- ssl %>%
   #using forcats:fct_relevel to re-order levels to desired order along x axis
   mutate(age_arr = fct_relevel(age_arr, 
                                c("less than 20",
@@ -99,10 +104,12 @@ ssl_age_arr <- ssl %>%
                                 'over fifty' = c("50-60", 
                                                  "60-70", 
                                                  "70-80"))) %>%
+  #dropping na's before graphing
+  drop_na() %>%
   ggplot(mapping = aes(age_arr)) +
   #adding a fun color
   geom_bar(fill = "#FF6666") +
-  labs(title = "SSL List Subjects by Age Last Arrested", 
+  labs(title = "SSL Subjects by Age Last Arrested", 
              x = "Age Group",  
              y = "Count",
              caption = "(Source: Chicago Data Portal)") +
@@ -152,8 +159,10 @@ Results are pretty surprising. Looks like the SSL is pretty accurate in terms of
 Variance in SSL score by age group
 
 ```{r ssl scores by age group}
-ssl_age <- ssl %>% 
-  #using forcats:fct_relevel to re-order levels to desired order in key
+
+
+ssl_age_curr <- ssl %>% 
+  #using forcats:fct_relevel to re-order levels to desired order along x axis
   mutate(age_curr = fct_relevel(age_curr, 
                                c("less than 20",
                                  "20-30",
@@ -166,21 +175,101 @@ ssl_age <- ssl %>%
   mutate(age_curr = fct_collapse(age_curr,
                                 'over fifty' = c("50-60", 
                                                  "60-70", 
-                                                 "70-80"))) %>%
+                                                 "70-80")))
+ssl_age_group <- ssl_age_curr %>%
+  #get rid of na's before graphing
+  drop_na() %>%
   ggplot(mapping = aes(x = ssl_score, fill = age_curr, na.rm = FALSE)) +
   geom_density(stat = "bin") +
-   labs(title = "SSL List Subjects by Current Age", 
+   labs(title = "SSL Subjects by Current Age Group", 
              x = "SSL Score",  
              y = "Density",
-             color = "Age Group", 
+             fill = "Age Group", 
              caption = "(Source: Chicago Data Portal)") +
   theme_minimal()
   
 
-ssl_age
+ssl_age_faceted <- ssl_age_curr %>%
+  #get rid of na's before graphing
+  drop_na() %>%
+  ggplot(mapping = aes(x = ssl_score, na.rm = FALSE)) +
+  geom_density() +
+  facet_wrap(~age_curr) +
+  labs(title = "SSL Subjects by Current Age Group, Faceted", 
+             x = "SSL Score",  
+             y = "Density",
+             caption = "(Source: Chicago Data Portal)") +
+  theme_minimal()
+  
+
+ssl_age_group
+ssl_age_faceted
+
 ```
 
 
-Highest scores are for age group less than 20! Interesting. Also wondering what this extra pink lump is. 
+Highest scores are for age group less than 20! Lines up with age demographics of violent crime offenders. Also wondering what that extra pink lump is. It got smaller after I got rid of NA's, but even after I did, it's still there. Are there people who are older than 80 on the list? No, there aren't any people older than 80 on the list.
 
-OK now let's turn to race. 
+Now let's check out gang affiliations by age group.
+
+```{r age & gang affiliation}
+
+ssl_age_gang <- ssl_age_curr %>%
+  #get rid of na's before graphing
+  drop_na() %>%
+  #reordering by bar height and filling by gang affiliation
+  ggplot(mapping = aes(x = age_curr, 
+                      fill = (gang_aff == TRUE), na.rm = FALSE)) +
+  geom_histogram(stat = "count") +
+   labs(title = "SSL Subjects Gang Affiliation by Age Group", 
+             x = "Age Group",  
+             y = "Count of Subjects",
+             fill = "Gang Affiliation", 
+             caption = "(Source: Chicago Data Portal)") +
+  #manually customizing colors and legend text
+  scale_fill_manual(values = c("#E69F00", "#56B4E9"), 
+                       name = "Gang Affiliation",
+                       breaks = c("TRUE", "FALSE"),
+                       labels = c("Affiliated", "Not Affiliated")) +
+  
+  theme_minimal()
+  
+
+
+ssl_age_gang
+
+
+```
+
+By race
+
+```{r by race}
+
+ssl_race_data <- ssl %>% 
+  #using forcats:fct_relevel to re-order levels to desired order along x axis
+  mutate(race = fct_collapse(race,
+                             'Other' = c("I", "U", "WBH"),
+                             'Black' = c("BLK"), 
+                             'White' = c("WHI"),
+                             'Hispanic' = c("WWH")))
+
+
+ssl_race <- ssl_race_data %>% 
+  #reordering by bar height and filling by gang affiliation
+  ggplot(mapping = aes(x = race, fill = fct_infreq(race))) +
+  geom_bar() +
+   labs(title = "SSL Subject Counts by Race", 
+             x = "Race Group",  
+             y = "Counts",
+             caption = "(Source: Chicago Data Portal)") +
+  theme_minimal() +
+  theme(legend.title = element_blank())
+
+ssl_race
+
+
+```
+
+
+
+

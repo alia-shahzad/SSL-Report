@@ -3,9 +3,9 @@ Alia Shahzad
 
 ### What is this?
 
-This repository contains publically available data from the Strategic Subject List (SSL), street name the "Heat List." It's an algorithm used by the Chicago Police Department to assign a risk score of an individual becoming a victim or perpetrator of violence (that is, party to violence) and intervene before this potential violence occurs. The SSL assigned a risk score to every Chicagoan with an arrest history prior to September of 2019, when its use was formally retired; the data has been de-identified for the privacy of its subjects.
+This repository contains publically available data from the Strategic Subject List (SSL), street name the "Heat List," which was retired in 2019. During its time, the Chicago Police Department (CPD) used an algorithm to assess the risk of a given individual becoming party to violence. The CPD used SSL data to anticipate and intervene in high risk individuals' lives before potential violence occured. This data set contains risk scores for every Chicagoan with an arrest history in the time period of 2012-2016; the data has been de-identified for the privacy of its subjects.
 
-This project aims to make sense of the data, and particularly the claim by the CPD that the SSL algorithm did not use race as a factor when assigning risk scores. 
+This project aims to make sense of this data, and particularly assess the claim by the CPD that the SSL algorithm did not use race as a factor when assigning risk scores. To that end, it also uses 2012-2016 census tract data to calculate the percentage of black men in the city of Chicago who were assigned SSL scores. 
 
 ### What can I find here?
 
@@ -25,7 +25,7 @@ An [md](ssl_report.md)  with my final analysis of the SSL data.
 
 You'll need RSocrata and forcats to execute these files.
 
-Check out my [preliminary analysis](ssl.Rmd) of the SSL data to see how I downloaded these packages.
+Check out my [preliminary analysis](ssl.Rmd) of the SSL data to see an example of how I downloaded these packages.
 
 ### Where did this data come from?
 
@@ -33,4 +33,4 @@ The data in this repo was loaded in an R-friendly csv format created by the good
 
 SSL data is also available in other formats on the the [City of Chicago's Data portal](https://data.cityofchicago.org/Public-Safety/Strategic-Subject-List/4aki-r3np).
 
-Thanks to the journalists from the Sun-Times and the Invisible Institute, as well as the state Attorney General's Office, for pressuring the CPD to make this data publically available. 
+Thanks to the journalists from the Sun-Times and the Invisible Institute, the ACLU, as well as the State Attorney General's Office for pressuring the CPD to make this data publically available. 
