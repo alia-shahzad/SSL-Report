@@ -1,0 +1,33 @@
+---
+title: "SSL"
+author: "Alia Shahzad"
+date: "5/14/2020"
+output: html_document
+---
+
+```{r setup}
+#the necessary packages
+
+library(tidyverse)
+library(here)
+install.packages("RSocrata")
+
+```
+
+
+```{r read data}
+#Builds local file path & avoids using the dreaded setwd() by using socrata package
+#to read directly from URL. Find more info on Socrata [here](https://github.com/Chicago/RSocrata/blob/master/README.md).
+
+ssl_data <- RSocrata::read.socrata("https://data.cityofchicago.org/Public-Safety/Strategic-Subject-List/4aki-r3np/data")
+
+```
+
+
+
+```{r tidy data}
+ssl_datassl %>%
+  select(ssl_score, predictor_rat_age_at_latest_arrest,predictor_rat_gang_affiliation, race_code_cd, age_curr)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
