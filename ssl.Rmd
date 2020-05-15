@@ -5,29 +5,102 @@ date: "5/14/2020"
 output: html_document
 ---
 
-```{r setup}
-#the necessary packages
+```{r setup, echo = FALSE}
+#The necessary packages
 
 library(tidyverse)
 library(here)
-install.packages("RSocrata")
+install.packages("RSocrata") #Make sure you have this one!
+library(forcats)
 
 ```
 
 
-```{r read data}
-#Builds local file path & avoids using the dreaded setwd() by using socrata package
-#to read directly from URL. Find more info on Socrata [here](https://github.com/Chicago/RSocrata/blob/master/README.md).
+```{r read & tidy data, cache = TRUE}
+#Builds local file path & avoids using the dreaded setwd() by using Socrata package
+#to read directly from a URL. Find more info on Socrata.  [here](https://github.com/Chicago/RSocrata/blob/master/README.md).
 
-ssl_data <- RSocrata::read.socrata("https://data.cityofchicago.org/Public-Safety/Strategic-Subject-List/4aki-r3np/data")
+ssl <- RSocrata::read.socrata("https://data.cityofchicago.org/Public-Safety/Strategic-Subject-List/4aki-r3np/data") %>%
+  write_csv(path = here("data", "ssl.csv")) %>% #writing data into right folder
+  select(ssl_score, 
+         predictor_rat_age_at_latest_arrest,
+         predictor_rat_gang_affiliation, 
+         race_code_cd, 
+         age_curr) %>% #selecting vars of interest
+  rename(age_arr = 'predictor_rat_age_at_latest_arrest',
+         gang_aff = 'predictor_rat_gang_affiliation', 
+         race = 'race_code_cd') #shortening var names
+
+```
+  
+      
+```{r ssl split factors, echo = TRUE, results = 'hide'}
+
+#this is a separate chunk so I can hide its very ugly product when I print.
+
+#cutting ssl scores into factors for following visualization.
+
+mylabels <- c("Low Risk", "High Risk", "Very High Risk") 
+cut_ssl <- cut(ssl$ssl_score, breaks=c(0, 250, 450, 500), labels=mylabels)  
+  
+```
+
+SSL Scores Overview by Risk of Violence
+
+Overview of SSL Scores. SSL Scores are placed on a scale ranging from 0 (extremely low risk of violence) to 500 (extremely high risk violence). A score above 250 [earns](https://medium.com/equal-future/how-strategic-is-chicagos-strategic-subjects-list-upturn-investigates-9e5b4b235a7c) "heightened police scrutiny," and score above 450 is high-risk for becoming party to violence. The vast majority of scores are between 0 - 450, and within this group, more scores are high risk (250-350) than low risk (0-250). Very few scores are very high risk (above 450).
+
+```{r ssl scores overview graph}
+
+#plotting data visualization
+ssl_overview <- ssl %>%
+  #mapping ssl_scores & cut ssl_scores separately to show score groups in visualization
+  ggplot(mapping = aes(ssl_score, fill = cut_ssl)) + 
+  geom_area(stat = "bin") +
+  labs(title = "SSL Score Distribution", 
+       x = "SSL Score",
+       y = "Count",
+       fill = "Risk of Becoming Party to Violence",
+       caption = "(Source: Chicago Data Portal)") +
+  theme(legend.position = "top")
+  theme_minimal() 
+
+ssl_overview
+```
+
+SSL Scores by Age
+
+Most SSL Subjects were under the age of 40 when they were most recently arrested. The most represented age group here is 20-30, which is unsurprising considering this is also the age group most represented in committing crime. It'd be interesting to compare these figures to age groups of SSL subjects when they were first arrested, but unfortunately the CPD did not release this data. I suspect we'd see a significantly larger bar for the under 20 age group in this case. 
+
+
+```{r scores by age}
+
+library(forcats)
+
+ssl_age <- ssl %>% 
+  #using forcats:fct_relevel to re-order levels to desired order along x axis
+  mutate(age_arr = fct_relevel(age_arr, 
+                               c("less than 20",
+                                 "20-30",
+                                 "30-40",
+                                 "40-50",
+                                 "50-60",
+                                 "60-70",
+                                 "70-80"))) %>% 
+  #using forcats:fct_collapse to combine older age groups in over fifty
+  mutate(age_arr = fct_collapse(age_arr,
+                                'over fifty' = c("50-60", 
+                                                 "60-70", 
+                                                 "70-80"))) %>%
+  ggplot(mapping = aes(age_arr, na.rm = FALSE)) +
+  #adding a fun color
+  geom_bar(fill = "#FF6666") +
+  labs(title = "SSL List Subjects by Age Last Arrested", 
+             x = "Age Group",  
+             y = "Count",
+             caption = "(Source: Chicago Data Portal)") +
+  theme_minimal()
+
+ssl_age
 
 ```
 
-
-
-```{r tidy data}
-ssl_datassl %>%
-  select(ssl_score, predictor_rat_age_at_latest_arrest,predictor_rat_gang_affiliation, race_code_cd, age_curr)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
