@@ -43,17 +43,14 @@ ssl <- RSocrata::read.socrata("https://data.cityofchicago.org/Public-Safety/Stra
          gang_aff = 'predictor_rat_gang_affiliation', 
          race = 'race_code_cd') #shortening var names
 
-#Read census data using local file path
-census <- cat(readLines(here("data", "census_data_12_16.csv")))  
 
 ```
   
       
 ```{r ssl split factors, echo = TRUE, results = 'hide'}
 
-#this is a separate chunk so I can hide its very ugly product when I print.
-
-#cutting ssl scores into factors for following visualization.
+#this chunk splits the ssl scores into new classes for the next graph 
+#it's in a different chunk so I can hide its very ugly product when it print
 
 mylabels <- c("Low Risk", "High Risk", "Very High Risk") 
 cut_ssl <- cut(ssl$ssl_score, breaks=c(0, 250, 450, 500), labels=mylabels)  
@@ -89,7 +86,7 @@ Most SSL Subjects were under the age of 40 when they were most recently arrested
 
 ```{r scores by age}
 
-ssl_age_arr <- ssl %>%
+age_arr_mut <- ssl %>%
   #using forcats:fct_relevel to re-order levels to desired order along x axis
   mutate(age_arr = fct_relevel(age_arr, 
                                c("less than 20",
@@ -103,7 +100,8 @@ ssl_age_arr <- ssl %>%
   mutate(age_arr = fct_collapse(age_arr,
                                 'over fifty' = c("50-60", 
                                                  "60-70", 
-                                                 "70-80"))) %>%
+                                                 "70-80"))) 
+age_arr_bar <- age_arr_mut %>%
   #dropping na's before graphing
   drop_na() %>%
   ggplot(mapping = aes(age_arr)) +
@@ -115,7 +113,8 @@ ssl_age_arr <- ssl %>%
              caption = "(Source: Chicago Data Portal)") +
   theme_minimal()
 
-ssl_age_arr
+
+age_arr_bar
 ```
 
 
@@ -219,7 +218,8 @@ ssl_age_gang <- ssl_age_curr %>%
   drop_na() %>%
   #reordering by bar height and filling by gang affiliation
   ggplot(mapping = aes(x = age_curr, 
-                      fill = (gang_aff == TRUE), na.rm = FALSE)) +
+                       fill = (gang_aff == TRUE), 
+                       na.rm = FALSE)) +
   geom_histogram(stat = "count") +
    labs(title = "SSL Subjects Gang Affiliation by Age Group", 
              x = "Age Group",  
@@ -230,18 +230,44 @@ ssl_age_gang <- ssl_age_curr %>%
   scale_fill_manual(values = c("#E69F00", "#56B4E9"), 
                        name = "Gang Affiliation",
                        breaks = c("TRUE", "FALSE"),
-                       labels = c("Affiliated", "Not Affiliated")) +
+                       labels = c("Affiliated", "Not Affiliated")) 
   
-  theme_minimal()
-  
+#next creating a boxplot of gang affiliations and ssl scores  
+#first creating a list for factor labels
+  gang_labels <- list(
+  '0' = "No Gang Affiliation",
+  '1' = "Gang Affiliation"
+)
+#creating a function to push labels (I know this is extra work but trying
+#to make up for the lack of tidying I had to do).
 
+gang_labeller <- function(variable,value){
+  return(gang_labels[value])
+}
+
+ssl_age_gang_box <- ssl_age_curr %>%
+  #get rid of na's before graphing
+  drop_na() %>%
+  #reordering by bar height and filling by gang affiliation
+  ggplot(mapping = aes(x = ssl_score, 
+                      na.rm = FALSE)) +
+  geom_boxplot() +
+  #faceting around gang affilliation 
+  facet_wrap(~gang_aff,
+             labeller = gang_labeller) +
+  labs(title = "SSL Subjects Gang Affiliation by Age Group", 
+             x = "SSL Score",  
+             caption = "(Source: Chicago Data Portal)")
 
 ssl_age_gang
-
+ssl_age_gang_box
 
 ```
 
-By race
+Median SSL score a bit higher for people with gang affiliations, but maybe not as much as we might anticipate.
+
+
+By race -- we observe no significant differences in median SSL score by race. We do see that significantly more black men are subject on the list than any other race, which is not proportionate to their perctentage of the city's population, [30%](https://www.census.gov/quickfacts/chicagocityillinois).
 
 ```{r by race}
 
@@ -254,7 +280,7 @@ ssl_race_data <- ssl %>%
                              'Hispanic' = c("WWH")))
 
 
-ssl_race <- ssl_race_data %>% 
+ssl_race_bar <- ssl_race_data %>% 
   #reordering by bar height and filling by gang affiliation
   ggplot(mapping = aes(x = race, fill = fct_infreq(race))) +
   geom_bar() +
@@ -265,8 +291,20 @@ ssl_race <- ssl_race_data %>%
   theme_minimal() +
   theme(legend.title = element_blank())
 
-ssl_race
+ssl_race_box <- ssl_race_data %>% 
+  #reordering by bar height and filling by gang affiliation
+  ggplot(mapping = aes(x = ssl_score)) +
+  geom_boxplot() +
+  facet_wrap(~race)
+   labs(title = "SSL Subject Counts Faceted by Race", 
+             x = "Race Group",  
+             y = "Count of Subjects",
+             caption = "(Source: Chicago Data Portal)") +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 
+ssl_race_bar
+ssl_race_box
 
 ```
 

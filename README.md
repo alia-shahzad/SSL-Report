@@ -5,7 +5,7 @@ Alia Shahzad
 
 This repository contains publically available data from the Strategic Subject List (SSL), street name the "Heat List," which was retired in 2019. During its time, the Chicago Police Department (CPD) used an algorithm to assess the risk of a given individual becoming party to violence. The CPD used SSL data to anticipate and intervene in high risk individuals' lives before potential violence occured. This data set contains risk scores for every Chicagoan with an arrest history in the time period of 2012-2016; the data has been de-identified for the privacy of its subjects.
 
-This project aims to make sense of this data, and particularly assess the claim by the CPD that the SSL algorithm did not use race as a factor when assigning risk scores. To that end, it also uses 2012-2016 census tract data to calculate the percentage of black men in the city of Chicago who were assigned SSL scores. 
+This project aims to make sense of this data, and particularly assess the claim by the CPD that the SSL algorithm did not use race as a factor when assigning risk scores. 
 
 ### What can I find here?
 
