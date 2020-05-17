@@ -2,7 +2,9 @@
 title: "SSL"
 author: "Alia Shahzad"
 date: "5/14/2020"
-output: html_document
+output: pdf
+
+
 ---
 
 FOR FINAL DOC
@@ -17,8 +19,9 @@ library(here)
 install.packages("RSocrata") #Make sure you have this one!
 library(forcats)
 
-#Sends visualizations to a folder named images (and creates that folder if it 
-#doesn't exist). I'll use this folder to fetch images for my final write-up.
+#Sends all the visualizations to a folder named images (and creates that folder if it 
+#doesn't exist). I might use this folder to fetch images for my final write-up.
+
 knitr::opts_chunk$set(
   fig.path = "images/"
 )
@@ -61,7 +64,7 @@ SSL Scores Overview by Risk of Violence
 
 Overview of SSL Scores. SSL Scores are placed on a scale ranging from 0 (extremely low risk of violence) to 500 (extremely high risk violence). A score above 250 [earns](https://medium.com/equal-future/how-strategic-is-chicagos-strategic-subjects-list-upturn-investigates-9e5b4b235a7c) "heightened police scrutiny," and score above 450 is high-risk for becoming party to violence. The vast majority of scores are between 0 - 450, and within this group, more scores are high risk (250-350) than low risk (0-250). Very few scores are very high risk (above 450).
 
-```{r ssl scores overview graph}
+```{r ssl scores overview graph, results = FALSE}
 
 #plotting data visualization
 ssl_overview <- ssl %>%
