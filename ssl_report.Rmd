@@ -3,7 +3,7 @@ title: "SSl Final Report"
 author: "Alia Shahzad"
 date: "5/18/2020"
 output:
-  github_document:
+  github_document
     
 ---
 
