@@ -12,9 +12,9 @@ output:
 
 library(here)
 
-graph <- function(graph){
-  knitr::include_graphics(here("images",graph))
-}
+knitr::opts_chunk$set(
+  fig.path = "images/"
+)
 ```
 
 ## Introduction
