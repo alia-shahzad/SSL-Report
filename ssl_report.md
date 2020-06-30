@@ -3,7 +3,7 @@ SSl Final Report
 Alia Shahzad
 5/18/2020
 
-    ## here() starts at /home/ashahzad/R/Homework/hw6
+    ## here() starts at /Users/ai-ming/iCloud Drive (Archive)/SSL Report Private
 
 ## Introduction
 
@@ -32,7 +32,7 @@ race.
 
 ## Overview of Scores
 
-<img src="/home/ashahzad/R/Homework/hw6/images/ssl scores overview graph-1.png" width="100%" />
+<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/ssl scores overview graph-1.png" width="100%" />
 
 SSL Scores are placed on a scale ranging from 0 (extremely low risk of
 violence) to 500 (extremely high risk violence). A score above 250
@@ -46,7 +46,7 @@ are at very high risk (above
 
 ## Age
 
-<img src="/home/ashahzad/R/Homework/hw6/images/scores by age-1.png" width="100%" /><img src="/home/ashahzad/R/Homework/hw6/images/ssl scores by age group-1.png" width="100%" /><img src="/home/ashahzad/R/Homework/hw6/images/ssl scores by age group-2.png" width="100%" />
+<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/scores by age-1.png" width="100%" /><img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/ssl scores by age group-1.png" width="100%" /><img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/ssl scores by age group-2.png" width="100%" />
 
 From the first graph, which counts SSL subjects by age first arrested,
 we observe that most SSL subjects were under the age of 40 when they
@@ -69,7 +69,7 @@ incarceration.
 
 ## Accuracy and Age
 
-<img src="/home/ashahzad/R/Homework/hw6/images/oldies visualization-1.png" width="100%" />
+<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/oldies visualization-1.png" width="100%" />
 
 A common critique of the SSL was that its input data was not updated
 frequently enough, leading to the assignment of high scores to elder
@@ -86,7 +86,7 @@ percentage of the scores above
 
 ## Gang Affiliation
 
-<img src="/home/ashahzad/R/Homework/hw6/images/age & gang affiliation-2.png" width="100%" /><img src="/home/ashahzad/R/Homework/hw6/images/age & gang affiliation-1.png" width="100%" />
+<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/age & gang affiliation-2.png" width="100%" /><img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/age & gang affiliation-1.png" width="100%" />
 
 Here, we examine the relationship between SSL scores, age and gang
 affiliation. In the faceted boxplot, we observe that the median SSL
@@ -100,7 +100,7 @@ violence.
 
 ## Race
 
-<img src="/home/ashahzad/R/Homework/hw6/images/by race-1.png" width="100%" /><img src="/home/ashahzad/R/Homework/hw6/images/by race-2.png" width="100%" />
+<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/by race-1.png" width="100%" /><img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/by race-2.png" width="100%" />
 
 These graphs map SSL scores by race. Looking to the boxplots, we observe
 no significant differences in median SSL score by race. However, in the
