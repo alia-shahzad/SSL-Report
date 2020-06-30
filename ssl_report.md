@@ -14,7 +14,7 @@ to assess the risk of a given individual becoming party to violence. The
 CPD intended to anticipate and intervene with subjects on the SSL before
 potential violence occured. But the SSL was subject to much public
 scrutiny, one reason being the lack of transparancy around the algorithm
-and the data being fed into it, and it’s use was quietly retired in
+and the data being fed into it, and its use was quietly retired in
 2019.
 
 Under pressure from the ACLU, the state of ILlinois’ Attorney General’s
