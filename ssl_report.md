@@ -8,18 +8,18 @@ Alia Shahzad
 ## Introduction
 
 This report uses publically available data from the Strategic Subject
-List (SSL), street name the “Heat List,” which was retired in 2019.
-Over the decade of its use, the Chicago Police Department (CPD) used an algorithm
-to assess the risk of a given individual becoming party to violence, and used the
-data to identify and intervene with these high-risk individuals. 
+List (SSL), street name the “Heat List."
+To make the list, the Chicago Police Department (CPD) used an algorithm
+that assesses the risk of a given individual becoming party to violence.
+It then used this data to identify and intervene with these high-risk individuals. 
 But the SSL was subject to much public scrutiny, 
 one reason being the lack of transparancy around the algorithm itself
 and the data being fed into it. Its use was quietly retired in
 2019.
 
-Under pressure from the ACLU, the state of ILlinois’ Attorney General’s
+In 2016, Under pressure from the ACLU, the state of ILlinois’ Attorney General’s
 Office, as well as a group of journalists who submitted a FOIA for SSL
-data, in 2016, the CPD released a set of de-identified data of list
+data, the CPD released a set of de-identified data of list
 subjects that included, among other categories, scores, race, age
 arrested, and current age; these are the variables I analyze in this
 report. The CPD
