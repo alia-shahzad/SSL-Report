@@ -27,12 +27,11 @@ report. The CPD
 that it did not use race as a factor when calculating risk scores. While
 it’s impossible to assess the truth of this claim as they declined to
 release the SSL algorithm itself, this analysis also aims to determine
-to what extent risk scores were assosciated by
-race.
+to what extent risk scores were assosciated by race.
 
 ## Overview of Scores
 
-<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/ssl scores overview graph-1.png" width="100%" />
+![](images/ssl%20scores%20overview%20graph-1.png)
 
 SSL Scores are placed on a scale ranging from 0 (extremely low risk of
 violence) to 500 (extremely high risk violence). A score above 250
@@ -41,12 +40,13 @@ violence) to 500 (extremely high risk violence). A score above 250
 becoming party to violence. From this graph, we observe that the vast
 majority of scores are between 0 - 450, and within this group, more
 scores are high risk (250-350) than low risk (0-250). Very few scores
-are at very high risk (above
-450).
+are at very high risk (above 450).
 
 ## Age
 
-<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/scores by age-1.png" width="100%" /><img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/ssl scores by age group-1.png" width="100%" /><img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/ssl scores by age group-2.png" width="100%" />
+![](images/scores%20by%20age-1.png)
+![](images/ssl%20scores%20by%20age%20group-1.png)
+![](images/ssl%20scores%20by%20age%20group-2.png)
 
 From the first graph, which counts SSL subjects by age first arrested,
 we observe that most SSL subjects were under the age of 40 when they
@@ -64,12 +64,11 @@ we note that age group with the highest scores is under 20\! As subjects
 get older, their risk for becoming party to violence decreases. These
 observations lines up with age demographics of violent crime offenders;
 past offenders are significantly less likely to commit crimes as they
-age, particularly coming out of long periods of
-incarceration.
+age, particularly coming out of long periods of incarceration.
 
 ## Accuracy and Age
 
-<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/oldies visualization-1.png" width="100%" />
+![](images/oldies%20visualization-1.png)
 
 A common critique of the SSL was that its input data was not updated
 frequently enough, leading to the assignment of high scores to elder
@@ -81,12 +80,12 @@ inaccurate data. In this graph, I look at what percent of old people
 demonstrates that people over the age of 50 are assesed at a fairly
 low-risk score (below 250), which indicates that this worry is likely
 not founded. We would be more worried if the elderly composed any
-percentage of the scores above
-250.
+percentage of the scores above 250.
 
 ## Gang Affiliation
 
-<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/age & gang affiliation-2.png" width="100%" /><img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/age & gang affiliation-1.png" width="100%" />
+![](images/age%20&%20gang%20affiliation-2.png)
+![](images/age%20&%20gang%20affiliation-1.png)
 
 Here, we examine the relationship between SSL scores, age and gang
 affiliation. In the faceted boxplot, we observe that the median SSL
@@ -95,12 +94,11 @@ as much as we might anticipate. In the bar graph, we observe that
 subjects currently aged 20-30 are most likely to be members of gangs.
 This is unsurprising given the trend of younger criminals (20 and below)
 to opt out of gangs and instead participate in smaller cliques or rogue
-acts of
-violence.
+acts of violence.
 
 ## Race
 
-<img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/by race-1.png" width="100%" /><img src="/Users/ai-ming/iCloud Drive (Archive)/SSL Report Private/images/by race-2.png" width="100%" />
+![](images/by%20race-1.png) ![](images/by%20race-2.png)
 
 These graphs map SSL scores by race. Looking to the boxplots, we observe
 no significant differences in median SSL score by race. However, in the
